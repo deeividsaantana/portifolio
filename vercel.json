@@ -1,0 +1,16 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/deivid-portfolio", "destination": "/", "permanent": true },
+    { "source": "/deivid-portfolio.html", "destination": "/", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}
