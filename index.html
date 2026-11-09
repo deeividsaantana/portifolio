@@ -85,6 +85,8 @@
   .hero { position: relative; overflow: hidden; border-bottom: 2px solid var(--ink); }
   .hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
   .hero-bg canvas { width: 100%; height: 100%; display: block; }
+  .hero-bg video { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 70% 50%; background: var(--bg); }
+  @media (max-width: 720px) { .hero-bg video { object-position: 62% 50%; opacity: 0.8; } }
   .hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,10,16,0.15) 0%, rgba(11,10,16,0.55) 60%, rgba(11,10,16,0.92) 100%); }
   .hero-inner { position: relative; z-index: 1; padding-block: 40px 44px; }
   .report-head { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; color: rgba(241,237,248,0.72); padding-bottom: 14px; border-bottom: 1px solid rgba(241,237,248,0.25); }
@@ -368,7 +370,12 @@
 
 <main id="topo">
   <section class="hero">
-    <div class="hero-bg" aria-hidden="true"><canvas id="plasmaCanvas"></canvas></div>
+    <div class="hero-bg" aria-hidden="true">
+      <video id="heroVideo" muted playsinline preload="auto" poster="assets/hero-sistema-poster.jpg" tabindex="-1">
+        <source src="assets/hero-sistema.webm" type="video/webm">
+        <source src="assets/hero-sistema.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="wrap hero-inner">
       <div class="report-head"><span>Portfólio técnico</span><span>Rev. 09/2026 · Suzano, SP</span></div>
       <h1 class="name" aria-label="Deivid Santana"><span class="line"><span>Deivid</span></span><span class="line two"><span>Santana</span></span></h1>
@@ -857,12 +864,31 @@
   var plasmaCanvas = document.getElementById("plasmaCanvas");
   if (plasmaCanvas) mountPlasma(plasmaCanvas);
 
+  /* Hero: o vídeo toca uma vez (código -> sistema) e congela no último quadro. */
+  var heroVideo = document.getElementById("heroVideo");
+  if (heroVideo) {
+    var conn = navigator.connection || {};
+    var saveData = conn.saveData || /(^|-)2g$/.test(conn.effectiveType || "");
+    if (reduceMotion || saveData) {
+      heroVideo.preload = "none";   /* só o poster (último quadro) */
+    } else {
+      /* sem loop: ao terminar, o navegador mantém o último quadro na tela */
+      var tryPlay = function () { var p = heroVideo.play(); if (p && p.catch) p.catch(function () {}); };
+      if (heroVideo.readyState >= 3) tryPlay(); else heroVideo.addEventListener("canplay", tryPlay, { once: true });
+    }
+  }
+
   if (!hasGsap || reduceMotion) return;
   gsap.registerPlugin(ScrollTrigger);
   root.classList.remove("js-anim");
 
   gsap.from(".name .line > span", { yPercent: 105, duration: 1, ease: "power4.out", stagger: 0.12, delay: 0.1 });
   gsap.from(".report-head, .hero-role, .field-strip > div, .hero .hero-actions > *", { opacity: 0, y: 14, duration: 0.6, ease: "power2.out", stagger: 0.06, delay: 0.45 });
+
+  /* Hero ligado à rolagem: o sistema "aproxima" e escurece, o texto sobe e some. */
+  var heroScroll = { trigger: ".hero", start: "top top", end: "bottom top", scrub: 0.6 };
+  gsap.to(".hero-bg video", { scale: 1.3, yPercent: 6, filter: "brightness(0.55) saturate(1.2)", ease: "none", scrollTrigger: heroScroll });
+  gsap.to(".hero-inner", { yPercent: -14, opacity: 0.15, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom 20%", scrub: 0.6 } });
 
   gsap.utils.toArray(".sec-head").forEach(function (h) {
     gsap.from(h, { clipPath: "inset(0 100% 0 0)", duration: 0.8, ease: "power3.inOut", scrollTrigger: { trigger: h, start: "top 88%", once: true } });
