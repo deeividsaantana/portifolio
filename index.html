@@ -111,7 +111,7 @@
   .hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
   .hero-bg canvas { width: 100%; height: 100%; display: block; }
   .scene { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: var(--bg); }
-  .scene video { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 68% 50%; }
+  .scene video { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 68% 50%; transform-origin: 50% 50%; transition: transform 1.5s cubic-bezier(.22,.7,.2,1), object-position 1.5s cubic-bezier(.22,.7,.2,1), filter 1.5s ease; will-change: transform; }
   .scene-shade { position: absolute; inset: 0; --scene-dim: .3; background: radial-gradient(ellipse at 70% 45%, rgba(11,10,16,0) 0%, rgba(11,10,16,.35) 70%), rgba(11,10,16,var(--scene-dim)); }
   @media (max-width: 720px) { .scene video { object-position: 62% 50%; } }
   .chapter-hud { position: fixed; left: 24px; bottom: 20px; z-index: 30; display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-dim); pointer-events: none; }
@@ -960,7 +960,23 @@
     { sel: "#experiencia", name: "Experiência" }, { sel: "#formacao", name: "Formação" }, { sel: "#sistema", name: "Sistema RENEA" }, { sel: "#contato", name: "Contato" }
   ];
   var chNo = document.getElementById("chNo"), chName = document.getElementById("chName"), chBar = document.getElementById("chBar");
-  function setChapter(i) { chNo.textContent = ("0" + (i + 1)).slice(-2); chName.textContent = chapters[i].name; }
+  /* Cada capítulo ganha uma "câmera" própria (zoom, enquadramento, brilho) sobre o mesmo vídeo. */
+  var looks = [
+    { s: 1.00, x: 68, y: 50, f: "none" },
+    { s: 1.15, x: 40, y: 40, f: "brightness(.92)" },
+    { s: 1.30, x: 78, y: 62, f: "brightness(1) saturate(1.1)" },
+    { s: 1.12, x: 28, y: 55, f: "brightness(.9) hue-rotate(-14deg)" },
+    { s: 1.38, x: 62, y: 32, f: "brightness(1.05) saturate(1.15)" },
+    { s: 1.18, x: 82, y: 50, f: "brightness(1.1) saturate(1.2)" },
+    { s: 1.00, x: 50, y: 50, f: "brightness(1.2) saturate(1.25)" }
+  ];
+  function setChapter(i) {
+    chNo.textContent = ("0" + (i + 1)).slice(-2); chName.textContent = chapters[i].name;
+    var L = looks[i];
+    if (scene && !(reduceMotion || (navigator.connection && navigator.connection.saveData))) {
+      scene.style.transform = "scale(" + L.s + ")"; scene.style.objectPosition = L.x + "% " + L.y + "%"; scene.style.filter = L.f;
+    }
+  }
   if ("IntersectionObserver" in window && chNo) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) setChapter(chapters.findIndex(function (c) { return document.querySelector(c.sel) === en.target; })); });
