@@ -60,6 +60,31 @@
   .btn-ghost:hover { border-color: var(--ink); }
 
   /* top bar */
+  header.bar { transition: transform .35s cubic-bezier(.2,.7,.2,1), background .25s; }
+  header.bar .bar-inner { transition: height .25s; }
+  header.bar.is-compact { background: rgba(11,10,16,0.94); }
+  header.bar.is-compact .bar-inner { height: 46px; }
+  header.bar.is-hidden { transform: translateY(-100%); }
+  .btn-sm { padding: 8px 14px; font-size: 11px; gap: 8px; }
+  .bar-cta { display: none; }
+  header.bar.is-compact .bar-cta { display: inline-flex; }
+  @media (max-width: 720px) { header.bar.is-compact .bar-cta { display: none; } }
+  .contact-modal { width: min(92vw, 520px); padding: 0; border: 1px solid var(--border-strong); background: var(--panel); color: var(--ink); }
+  .contact-modal::backdrop { background: rgba(5,4,9,0.82); backdrop-filter: blur(4px); }
+  .contact-modal[open] { animation: modalIn .28s cubic-bezier(.2,.7,.2,1); }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+  .cm-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-dim); }
+  .cm-close { font: inherit; color: var(--ink); background: none; border: 1px solid var(--border-strong); padding: 4px 10px; cursor: pointer; }
+  .cm-close:hover { border-color: var(--ink); }
+  .cm-body { padding: 20px 18px 22px; display: grid; gap: 14px; }
+  .cm-body h2 { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; text-transform: uppercase; }
+  .cm-body p.cm-lead { color: var(--ink-dim); font-size: 15px; }
+  .cm-body label { display: grid; gap: 6px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-faint); }
+  .cm-body input, .cm-body textarea { font: 400 15px var(--sans, inherit); color: var(--ink); background: var(--bg); border: 1px solid var(--border-strong); padding: 11px 12px; width: 100%; text-transform: none; letter-spacing: 0; }
+  .cm-body textarea { min-height: 120px; resize: vertical; }
+  .cm-body input:focus, .cm-body textarea:focus { outline: 2px solid var(--violet); outline-offset: 1px; border-color: transparent; }
+  .cm-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .cm-note { font-size: 12px; color: var(--ink-faint); }
   header.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 40; background: rgba(11,10,16,0.82); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
   .bar-inner { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 28px; }
   .monogram { font-family: var(--display); font-weight: 900; font-size: 24px; letter-spacing: .02em; line-height: 1; }
@@ -350,7 +375,8 @@
       <a href="#contato" data-target="#contato"><b>06</b>Contato</a>
     </nav>
     <div class="bar-links">
-      <a class="icon-link" href="mailto:deivid.santana7002@gmail.com?subject=Oportunidade%20%E2%80%94%20contato%20pelo%20portf%C3%B3lio" aria-label="Enviar e-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg></a>
+      <button class="btn btn-primary btn-sm bar-cta" type="button" data-contact>Fale comigo</button>
+      <a class="icon-link" data-contact href="mailto:deivid.santana7002@gmail.com?subject=Oportunidade%20%E2%80%94%20contato%20pelo%20portf%C3%B3lio" aria-label="Enviar e-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg></a>
       <a class="icon-link" href="https://github.com/deeividsaantana/projeto-sistemadecontrole" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.65 5.31-5.18 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.26 11.26 0 0 0 23.25 11.75C23.25 5.48 18.27.5 12 .5Z"/></svg></a>
       <a class="icon-link" href="https://www.linkedin.com/in/deivid-santana-546b45297" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a>
       <button class="burger" id="burger" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileIndex">
@@ -573,7 +599,7 @@
         <p class="sign-cta">Tem um processo que ainda roda em <em>planilha e papel?</em></p>
         <p style="margin-top:18px; max-width:52ch;">Disponível para oportunidades em Suzano e região, presencial, híbrido ou home office. Me chama por e-mail ou pelo LinkedIn.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="mailto:deivid.santana7002@gmail.com?subject=Oportunidade%20%E2%80%94%20contato%20pelo%20portf%C3%B3lio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg>Enviar e-mail</a>
+          <a class="btn btn-primary" data-contact href="mailto:deivid.santana7002@gmail.com?subject=Oportunidade%20%E2%80%94%20contato%20pelo%20portf%C3%B3lio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg>Enviar e-mail</a>
           <a class="btn btn-ghost" href="https://www.linkedin.com/in/deivid-santana-546b45297" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>Chamar no LinkedIn</a>
           <a class="btn btn-ghost" href="https://github.com/deeividsaantana" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.16a10.9 10.9 0 0 1 5.72 0c2.18-1.47 3.14-1.16 3.14-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.35-2.65 5.31-5.18 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.26 11.26 0 0 0 23.25 11.75C23.25 5.48 18.27.5 12 .5Z"/></svg>github.com/deeividsaantana</a>
         </div>
@@ -588,6 +614,21 @@
     </div>
   </section>
 </main>
+
+<dialog class="contact-modal" id="contactModal" aria-labelledby="cmTitle">
+  <div class="cm-head"><span>contato.sh</span><button class="cm-close" type="button" id="cmClose" aria-label="Fechar">fechar ✕</button></div>
+  <form class="cm-body" id="contactForm" method="dialog">
+    <h2 id="cmTitle">Vamos conversar</h2>
+    <p class="cm-lead">Conte rápido o que você precisa. Ao enviar, abre o seu app de e-mail com a mensagem pronta.</p>
+    <label>Seu nome<input name="nome" type="text" autocomplete="name" required maxlength="80"></label>
+    <label>Seu e-mail<input name="email" type="email" autocomplete="email" required maxlength="120"></label>
+    <label>Mensagem<textarea name="msg" required maxlength="1200" placeholder="Ex.: temos um processo que ainda roda em planilha..."></textarea></label>
+    <div class="cm-actions">
+      <button class="btn btn-primary" type="submit">Enviar mensagem</button>
+      <span class="cm-note" id="cmNote">Resposta por e-mail, sem cadastro.</span>
+    </div>
+  </form>
+</dialog>
 
 <footer class="site wrap">
   <div class="foot"><span>Deivid Santana · ADS · UMC</span><a href="mailto:deivid.santana7002@gmail.com?subject=Oportunidade%20%E2%80%94%20contato%20pelo%20portf%C3%B3lio" style="text-transform:none">deivid.santana7002@gmail.com</a><span>Suzano, SP — Brasil</span></div>
@@ -863,6 +904,44 @@
   }
   var plasmaCanvas = document.getElementById("plasmaCanvas");
   if (plasmaCanvas) mountPlasma(plasmaCanvas);
+
+  /* Cabeçalho adaptativo: compacta ao rolar, esconde ao descer, volta ao subir. */
+  var bar = document.querySelector("header.bar");
+  if (bar) {
+    var lastY = window.scrollY, ticking = false;
+    var onBarScroll = function () {
+      var y = window.scrollY, menuOpen = mobileIndex && mobileIndex.classList.contains("open");
+      bar.classList.toggle("is-compact", y > 120);
+      if (y > 320 && y > lastY + 6 && !menuOpen) bar.classList.add("is-hidden");
+      else if (y < lastY - 6 || y <= 320) bar.classList.remove("is-hidden");
+      lastY = y; ticking = false;
+    };
+    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onBarScroll); } }, { passive: true });
+    bar.addEventListener("focusin", function () { bar.classList.remove("is-hidden"); });
+    onBarScroll();
+  }
+
+  /* Modal de contato: monta um mailto com os dados do formulário (sem backend). */
+  var cm = document.getElementById("contactModal"), cf = document.getElementById("contactForm");
+  if (cm && cf && typeof cm.showModal === "function") {
+    var TO = "deivid.santana7002@gmail.com";
+    var lastFocus = null;
+    document.querySelectorAll("[data-contact]").forEach(function (el) {
+      el.addEventListener("click", function (e) { e.preventDefault(); lastFocus = el; cm.showModal(); cf.elements.nome.focus(); });
+    });
+    document.getElementById("cmClose").addEventListener("click", function () { cm.close(); });
+    cm.addEventListener("click", function (e) { if (e.target === cm) cm.close(); });
+    cm.addEventListener("close", function () { if (lastFocus) lastFocus.focus(); });
+    cf.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var d = new FormData(cf);
+      var body = d.get("msg") + "\n\n— " + d.get("nome") + " (" + d.get("email") + ")";
+      var url = "mailto:" + TO + "?subject=" + encodeURIComponent("Contato pelo portfólio — " + d.get("nome")) + "&body=" + encodeURIComponent(body);
+      document.getElementById("cmNote").textContent = "Abrindo seu app de e-mail…";
+      window.location.href = url;
+      setTimeout(function () { cm.close(); cf.reset(); document.getElementById("cmNote").textContent = "Resposta por e-mail, sem cadastro."; }, 900);
+    });
+  }
 
   /* Hero: o vídeo toca uma vez (código -> sistema) e congela no último quadro. */
   var heroVideo = document.getElementById("heroVideo");
